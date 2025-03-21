@@ -6,36 +6,40 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { useEffect, useState } from 'react';
 import { APIs } from '@/services/api/APIs';
+import { useSession } from 'next-auth/react';
 
 export default function BarberCalendar() {
   const [events, setEvents] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [occupiedTimes, setOccupiedTimes] = useState<string[]>([]);
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const month = currentDate.getUTCMonth() + 1;
-        const year = currentDate.getUTCFullYear();
-        const response = await APIs.appointments.barberSchedules(month, year, 10);
+    if (status === "authenticated" && session?.user?.token) {
+      const fetchData = async () => {
+        try {
+          const month = currentDate.getUTCMonth() + 1;
+          const year = currentDate.getUTCFullYear();
+          const response = await APIs.appointments.barberSchedules(month, year, 10, session.user.token);
 
-        const busyTimes = response.map((appointment: any) => appointment.date);
-        setOccupiedTimes(busyTimes);
+          const busyTimes = response.map((appointment: any) => appointment.date);
+          setOccupiedTimes(busyTimes);
 
-        setEvents(
-          response.map((appointment: any) => ({
-            title: 'Ocupado',
-            start: appointment.date,
-            end: new Date(new Date(appointment.date).getTime() + 30 * 60000).toISOString(),
-            allDay: false,
-          }))
-        );
-      } catch (error) {
-        console.error('Error al cargar citas:', error);
-      }
-    };
+          setEvents(
+            response.map((appointment: any) => ({
+              title: 'Ocupado',
+              start: appointment.date,
+              end: new Date(new Date(appointment.date).getTime() + 30 * 60000).toISOString(),
+              allDay: false,
+            }))
+          );
+        } catch (error) {
+          console.error('Error al cargar citas:', error);
+        }
+      };
 
-    fetchData();
+      fetchData();
+    }
   }, [currentDate]);
 
   // 🔄 Normaliza fecha a UTC string sin segundos
