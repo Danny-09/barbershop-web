@@ -36,7 +36,6 @@ export default function Register() {
 
     try {
       const response = await APIs.users.register(data);
-      console.log('response', response);
 
       if (response.status == 'success') {
         toast.success('¡Registro exitoso! Redirigiendo...', {

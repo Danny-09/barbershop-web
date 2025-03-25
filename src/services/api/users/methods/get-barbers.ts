@@ -10,7 +10,5 @@ export const getBarbers = async (token: string) => {
         },
     });
     
-    console.log(response);
-
     return response;
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from "next-auth/react";
-import ButtonAuth from "@/components/ButtonAuth";
+import ButtonAuth from "@/app/inicio/layout";
 
 const Dashboard = () => {
 

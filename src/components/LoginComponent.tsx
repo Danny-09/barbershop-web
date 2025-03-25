@@ -2,7 +2,7 @@
 
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LogoComponent from './LogoComponent';
 import Link from 'next/link';
 
@@ -11,11 +11,10 @@ const LoginComponent = () => {
     const [password, setPassword] = useState('');
     const router = useRouter();
     const [error, setError] = useState<string[]>([]);
-    const { data: session, status } = useSession();
+    const { data: session, status } = useSession(); // Use session to track session status
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-
         setError([]);
 
         const responseNextAuth = await signIn('credentials', {
@@ -26,30 +25,38 @@ const LoginComponent = () => {
 
         if (responseNextAuth?.error) {
             setError(responseNextAuth.error.split(","));
-            return
-        }
-
-        switch (session?.user.role) {
-            case 'CUSTOMER':
-                router.push('/inicio')
-                break;
-            case 'BARBER':
-                router.push('/dashboard')
-                break;
-            case 'SUPERADMIN':
-                router.push('/dashboard-admin')
-                break;
-            default:
-                '403'
-                break;
+            return;
         }
     };
 
+    // Redirect the user after session is authenticated
+    useEffect(() => {
+        if (status === 'authenticated') {
+            // Check the role and navigate accordingly
+            switch (session?.user.role) {
+                case 'CUSTOMER':
+                    router.push('/inicio');
+                    break;
+                case 'BARBER':
+                    router.push('/dashboard');
+                    break;
+                case 'SUPERADMIN':
+                    router.push('/dashboard-admin');
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [status, session, router]); // Effect depends on session status
+
+    // Render loading or the login form based on session status
+    if (status === 'loading') {
+        return <p>Cargando...</p>; // Show a loading state while the session is loading
+    }
+
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-
             <form onSubmit={handleLogin} className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-
                 <LogoComponent w={400} h={100} />
 
                 <h2 className="text-2xl font-bold mb-6 text-center text-black">Iniciar Sesión</h2>
@@ -85,13 +92,13 @@ const LoginComponent = () => {
                     Iniciar Sesión
                 </button>
 
-                <div className='text-center mt-5'>
-                    <p className='text-gray-400 font-bold'>¿No tienes una cuenta aún?</p>
-                    <Link className='font-bold text-black ' href='/registro'> Registrarme </Link>
+                <div className="text-center mt-5">
+                    <p className="text-gray-400 font-bold">¿No tienes una cuenta aún?</p>
+                    <Link className="font-bold text-black" href="/registro"> Registrarme </Link>
                 </div>
             </form>
         </div>
-    )
-}
+    );
+};
 
-export default LoginComponent
+export default LoginComponent;

@@ -7,7 +7,7 @@ interface Props {
 
 const LogoComponent = ({w, h}: Props) => {
     return <Image
-        src="/images/image.png"
+        src="/images/logo.png"
         alt="logo legacy"
         width={w}
         height={h}

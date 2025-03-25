@@ -1,6 +1,6 @@
 import { ApiClient } from "../../ApiClient";
 import { ServicesResponse } from "../models/ServicesResponse";
-
+let count  = 0;
 export const getServicesByBarber = async (barberId: number, token: string): Promise<Service[]> => {
     const client = ApiClient.getInstance();
    
@@ -13,7 +13,5 @@ export const getServicesByBarber = async (barberId: number, token: string): Prom
         },
     });
     
-    console.log(response.items)
-
     return response.items;
 }
