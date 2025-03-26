@@ -17,13 +17,17 @@ interface Arg {
   dateStr: string;
 }
 
+interface ArgStart {
+  start: Date;
+}
+
 export default function BarberCalendar() {
   const { service_id } = useParams();
   const barber_id = sessionStorage.getItem('bs');
   const [events, setEvents] = useState<Events>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [occupiedTimes, setOccupiedTimes] = useState<string[]>([]);
-  const [scheduleTimes, setScheduleTimes] = useState<BarberSchedules>([]);
+  const [scheduleTimes, setScheduleTimes] = useState<BarberSchedules[]>([]);
   const token = useToken();
   const router = useRouter();
 
@@ -132,7 +136,7 @@ export default function BarberCalendar() {
     );
   };
 
-  const handleDateChange = (arg: any) => {
+  const handleDateChange = (arg: ArgStart) => {
     if (arg.start.toISOString() !== currentDate.toISOString()) {
       setCurrentDate(arg.start);
     }
@@ -140,7 +144,7 @@ export default function BarberCalendar() {
 
   const getDaySchedule = (date: Date) => {
     const dayOfWeek = date.getDay();
-    const daySchedule = scheduleTimes.find((schedule: any) => {
+    const daySchedule = scheduleTimes.find((schedule: BarberSchedules) => {
       const dayIndex = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'][dayOfWeek];
       return schedule.day === dayIndex;
     });

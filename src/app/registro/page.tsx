@@ -62,7 +62,7 @@ export default function Register() {
 
       setErrors([message]);
 
-      toast.error(message, {
+      toast.error(errors, {
         position: "top-right",
         autoClose: 3000,
       });
