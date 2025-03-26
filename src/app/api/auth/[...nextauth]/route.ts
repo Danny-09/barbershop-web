@@ -1,3 +1,4 @@
+import { Session } from "@/@types/UsersTypes";
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -40,7 +41,7 @@ const handler = NextAuth({
             return { ...token, ...user };
         },
         async session({ session, token }) {
-            session.user = token as any;
+            session.user = token as Session;
             return session;
         },
     },

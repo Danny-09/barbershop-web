@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
-import Error from "next/error";
 
 export default function Register() {
   const router = useRouter();
@@ -49,14 +48,24 @@ export default function Register() {
         }, 2000);
       }
 
-    } catch (error: any) {
-      const message = error.response.data.message[0] || ['Ocurrió un error inesperado.'];
-      setErrors(message);
+    } catch (error: unknown) {
+      let message = "Ocurrió un error inesperado.";
 
-      toast.error(errors, {
+      if (error instanceof Error) {
+        // Si el error es una instancia de Error estándar
+        message = error.message;
+      } else if (typeof error === "object" && error !== null) {
+        // Si el error tiene una estructura esperada (como un error de Axios)
+        const axiosError = error as { response?: { data?: { message?: string[] } } };
+        message = axiosError.response?.data?.message?.[0] || message;
+      }
+
+      setErrors([message]);
+
+      toast.error(message, {
         position: "top-right",
         autoClose: 3000,
-      })
+      });
     }
   };
 
