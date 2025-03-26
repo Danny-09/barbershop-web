@@ -26,7 +26,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
         <div className="min-h-screen flex flex-col bg-slate-50">
             <nav className="bg-white shadow-md py-3 px-6 flex justify-between items-center">
                 <div className="text-lg font-semibold text-gray-800">
-                    <LogoComponent w={90} h={10} />
+                    <Link href={'/inicio'}>
+                        <LogoComponent w={90} h={10} />
+                    </Link>
                 </div>
 
                 {status === "loading" ? (
@@ -58,12 +60,21 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                                     >
                                         Mi cuenta
                                     </Link>
+
+                                    <Link
+                                        href="/inicio/mis-citas"
+                                        className="block px-4 py-2 text-gray-800 hover:bg-gray-100"
+                                    >
+                                        Mis citas
+                                    </Link>
+
                                     <button
                                         onClick={() => signOut()}
                                         className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
                                     >
                                         Cerrar sesión
                                     </button>
+
                                 </div>
                             )}
                         </div>

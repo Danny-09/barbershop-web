@@ -1,14 +1,20 @@
-import { barberSchedules } from "./appointments/methods/get-appointments-by-month";
+import { barberSchedules } from "./appointments/methods/get-by-month";
 import { getBarbers } from "./users/methods/get-barbers";
-import { getServicesByBarber } from "./services/methods/get-services-by-barber";
+import { getServicesByBarber } from "./services/methods/get-by-barber";
 import { register } from "./users/methods/register-user";
 import { getByBarber } from "./schedules/methods/get-by-barber";
 import { create } from "./appointments/methods/create";
+import { userAppointments } from "./appointments/methods/get-by-user";
+import { changeStatusAppointment } from "./appointments/methods/change-status";
+import { deleteAppointment } from "./appointments/methods/delete";
 
 export const APIs = {
     appointments: {
-        barberSchedules,
         create,
+        changeStatusAppointment,
+        deleteAppointment,
+        barberSchedules,
+        userAppointments,
     },
     users: {
         register,
