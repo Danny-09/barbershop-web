@@ -29,7 +29,17 @@ export default function MyAppointments() {
     const handleCancelAppointment = async (appointmentId: number, token: string, date: string) => {
         Notiflix.Confirm.show(
             "Confirmar Cancelación",
-            `¿Estás seguro de que quieres cancelar esta cita ${new Date(date).toLocaleString()}?`,
+            `¿Estás seguro de que quieres cancelar esta cita ${new Date(date).toLocaleString("es-ES", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+                timeZone: "UTC",
+            })
+            }?`,
             "Sí, cancelar",
             "No",
             async () => {
@@ -74,7 +84,16 @@ export default function MyAppointments() {
                                     <td className="px-4 py-2">{cita.barber.name}</td>
                                     <td className="px-4 py-2 font-bold text-white">
                                         <p className="px-4 py-2 bg-blue-500 border border-gray-300 rounded-lg">
-                                            {new Date(cita.date).toLocaleString()}
+                                            {new Date(cita.date).toLocaleString("es-ES", {
+                                                weekday: "long",
+                                                year: "numeric",
+                                                month: "long",
+                                                day: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true,
+                                                timeZone: "UTC",
+                                            })}
                                         </p>
                                     </td>
                                     <td className="px-4 py-2">{cita.service.name + ' $' + cita.service.price}</td>
