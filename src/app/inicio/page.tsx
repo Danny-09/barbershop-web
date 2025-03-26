@@ -23,7 +23,7 @@ export default function Home() {
         if (token) {
             const fetchBarbers = async () => {
                 try {
-                    const response = await APIs.users.getBarbers(token);
+                    const response = await APIs.users.getBarbers(token.user.token);
                     setBarbers(response as Barber[]);
                 } catch (error) {
                     console.error("Error cargando barberos:", error);
@@ -55,7 +55,7 @@ export default function Home() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
                         {barbers.map((barber) => (
-                            <Link href={`/servicios/${barber.id}`} key={barber.id}>
+                            <Link href={`inicio/servicios/${barber.id}`} key={barber.id}>
                                 <div className="bg-white rounded-lg shadow p-4 border hover:shadow-lg transition cursor-pointer flex items-center gap-4">
                                     {/* Imagen a la izquierda */}
                                     <Image

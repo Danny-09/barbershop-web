@@ -31,7 +31,7 @@ export default function Register() {
       email: email,
       phone: phone,
       password: password,
-      role_id: 3,
+      role_id: 3, // role for customers
     };
 
     try {

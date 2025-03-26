@@ -18,9 +18,11 @@
     "next": "15.1.6",
     "next-auth": "^4.24.11",
     "nookies": "^2.5.2",
+    "notiflix": "^3.2.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-toastify": "^11.0.5"
+    "react-toastify": "^11.0.5",
+    "sweetalert2": "^11.17.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

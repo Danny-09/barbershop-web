@@ -13,7 +13,7 @@ const useToken = () => {
         }
     }, [status, session]);
 
-    return token;
+    return session;
 };
 
 export default useToken;
