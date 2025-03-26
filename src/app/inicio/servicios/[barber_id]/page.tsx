@@ -5,11 +5,12 @@ import { useParams } from "next/navigation";
 import { APIs } from "@/services/api/APIs";
 import useToken from "@/hooks/useToken";
 import Link from "next/link";
+import { Service } from "@/@types/ServicesTypes";
 
 export default function ServicesPage() {
     const { barber_id } = useParams();
     sessionStorage.setItem('bs', String(barber_id));
-    const [services, setServices] = useState<any[]>([]);
+    const [services, setServices] = useState<Service[]>([]);
     const [selectedService, setSelectedService] = useState<number | null>(null);
     const [loading, setLoading] = useState(true);
     const token = useToken();
@@ -20,7 +21,7 @@ export default function ServicesPage() {
         const fetchServices = async () => {
             try {
                 const data = await APIs.services.getServicesByBarber(Number(barber_id), token.user.token);
-                setServices(data);
+                setServices(data.items);
             } catch (error) {
                 console.error("Error fetching services:", error);
             } finally {

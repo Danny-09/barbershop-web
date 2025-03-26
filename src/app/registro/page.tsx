@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
+import Error from "next/error";
 
 export default function Register() {
   const router = useRouter();
@@ -52,7 +53,7 @@ export default function Register() {
       const message = error.response.data.message[0] || ['Ocurrió un error inesperado.'];
       setErrors(message);
 
-      toast.error(message, {
+      toast.error(errors, {
         position: "top-right",
         autoClose: 3000,
       })

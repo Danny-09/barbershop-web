@@ -4,7 +4,7 @@ import { ApiClient } from "../../ApiClient";
 export const create = async (data: any, token: string): Promise<CreateAppointment> => {
   const client = ApiClient.getInstance();
 
-  const response = await client.post<any>(
+  const response = await client.post<CreateAppointment>(
     `/appointments`,
     data,
     {

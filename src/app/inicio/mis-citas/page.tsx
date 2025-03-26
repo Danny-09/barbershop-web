@@ -5,7 +5,7 @@ import useToken from "@/hooks/useToken";
 import { APIs } from "@/services/api/APIs";
 import Notiflix from "notiflix";
 import { AppointmentsList } from "@/@types/AppointmentsTypes";
-import { TrashIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function MyAppointments() {
     const token = useToken();

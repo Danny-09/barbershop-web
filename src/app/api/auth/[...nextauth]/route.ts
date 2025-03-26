@@ -14,7 +14,7 @@ const handler = NextAuth({
                 email: { label: "email", type: "text" },
                 password: { label: "password", type: "password" }
             },
-            async authorize(credentials, req): Promise<any> {
+            async authorize(credentials) {
                 const res = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}auth/login`,
                     {

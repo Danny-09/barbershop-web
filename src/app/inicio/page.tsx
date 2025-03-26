@@ -17,7 +17,6 @@ type Barber = {
 
 export default function Home() {
     const [barbers, setBarbers] = useState<Barber[]>([]);
-    const [loading, setLoading] = useState(true);
     const token = useToken();
     useEffect(() => {
         if (token) {
@@ -28,7 +27,6 @@ export default function Home() {
                 } catch (error) {
                     console.error("Error cargando barberos:", error);
                 } finally {
-                    setLoading(false);
                 }
             };
             fetchBarbers();

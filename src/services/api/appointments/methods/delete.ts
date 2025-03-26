@@ -1,10 +1,10 @@
+import { DeleteAppointment } from "@/@types/AppointmentsTypes";
 import { ApiClient } from "../../ApiClient";
 
-export const deleteAppointment = async (id: number, token: string): Promise<any> => {
+export const deleteAppointment = async (id: number, token: string): Promise<DeleteAppointment> => {
     const client = ApiClient.getInstance();
 
-    // cambiar a tipado response mas adelante 
-    const response = await client.delete<any>(`/appointments/${id}`, {
+    const response = await client.delete<DeleteAppointment>(`/appointments/${id}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },

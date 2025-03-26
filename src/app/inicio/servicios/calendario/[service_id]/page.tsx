@@ -11,14 +11,15 @@ import { useParams } from "next/navigation";
 import useToken from '@/hooks/useToken';
 import Notiflix from 'notiflix';
 import { useRouter } from "next/navigation";
+import { BarberSchedules, Events } from '@/@types/ScheduleTypes';
 
 export default function BarberCalendar() {
   const { service_id } = useParams();
   const barber_id = sessionStorage.getItem('bs');
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState<Events>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [occupiedTimes, setOccupiedTimes] = useState<string[]>([]);
-  const [scheduleTimes, setScheduleTimes] = useState<{ day: string; start_time: string; end_time: string }[]>([]);
+  const [scheduleTimes, setScheduleTimes] = useState<BarberSchedules>([]);
   const token = useToken();
   const router = useRouter();
 
@@ -35,12 +36,12 @@ export default function BarberCalendar() {
 
           // Obtener las citas ocupadas
           const schedule = await APIs.appointments.barberSchedules(month, year, Number(barber_id), token.user.token);
-          const busyTimes = schedule.map((appointment: any) => appointment.date);
+          const busyTimes = schedule.map((appointment) => appointment.date);
           setOccupiedTimes(busyTimes);
 
           // Generar los eventos para FullCalendar
           setEvents(
-            schedule.map((appointment: any) => ({
+            schedule.map((appointment) => ({
               title: 'Ocupado',
               start: appointment.date,
               end: new Date(new Date(appointment.date).getTime() + 30 * 60000).toISOString(),

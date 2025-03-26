@@ -1,7 +1,8 @@
+import { ServicesList } from "@/@types/ServicesTypes";
 import { ApiClient } from "../../ApiClient";
 import { ServicesResponse } from "../models/ServicesResponse";
 
-export const getServicesByBarber = async (barberId: number, token: string): Promise<Service[]> => {
+export const getServicesByBarber = async (barberId: number, token: string): Promise<ServicesList> => {
     const client = ApiClient.getInstance();
    
     const response = await client.get<ServicesResponse>(`services/`, {
@@ -13,5 +14,5 @@ export const getServicesByBarber = async (barberId: number, token: string): Prom
         },
     });
     
-    return response.items;
+    return { items: response.items };
 }
