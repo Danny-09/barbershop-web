@@ -13,7 +13,7 @@ export const handleLoginWithRole = async (
             router.push('/dashboard');
             break;
         case 'CUSTOMER':
-            router.push('/home');
+            router.push('/inicio');
             break;
         case 'BARBER':
             router.push('/dashboard');
