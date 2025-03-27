@@ -1,44 +1,45 @@
 import { Session } from "@/@types/UsersTypes";
-import NextAuth from "next-auth"
+import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const handler = NextAuth({
+const authOptions: NextAuthOptions = {
     providers: [
         CredentialsProvider({
-            // The name to display on the sign in form (e.g. "Sign in with...")
-            name: "Iniciar sesion",
-            // `credentials` is used to generate a form on the sign in page.
-            // You can specify which fields should be submitted, by adding keys to the `credentials` object.
-            // e.g. domain, username, password, 2FA token, etc.
-            // You can pass any HTML attribute to the <input> tag through the object.
+            name: "Iniciar sesión",
             credentials: {
-                email: { label: "email", type: "text" },
-                password: { label: "password", type: "password" }
+                email: { label: "Email", type: "text", required: true },
+                password: { label: "Contraseña", type: "password", required: true }
             },
-            async authorize(credentials: Record<"email" | "password", string> | undefined) {
-                const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}auth/login`,
-                    {
-                        method: 'POST',
+            async authorize(credentials) {
+                if (!credentials?.email || !credentials?.password) {
+                    throw new Error("Email y contraseña son requeridos.");
+                }
+
+                try {
+                    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}auth/login`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            email: credentials?.email,
-                            password: credentials?.password,
-                        }),
-                        headers: { "Content-Type": "application/json" }
+                            email: credentials.email,
+                            password: credentials.password
+                        })
+                    });
+
+                    if (!res.ok) {
+                        throw new Error("Error en la autenticación");
                     }
-                )
 
-                const user = await res.json();
-
-                if (user.error) throw user;
-
-                return user;
+                    const user = await res.json();
+                    return user;
+                } catch (error) {
+                    throw new Error("No se pudo conectar con el servidor.");
+                }
             },
         }),
     ],
     callbacks: {
         async jwt({ token, user }) {
-            return { ...token, ...user };
+            return user ? { ...token, ...user } : token;
         },
         async session({ session, token }) {
             session.user = token as Session;
@@ -46,8 +47,10 @@ const handler = NextAuth({
         },
     },
     pages: {
-        signIn: '/login',
+        signIn: "/login",
     },
-});
+};
 
-export { handler as GET, handler as POST }
+const handler = NextAuth(authOptions);
+
+export { handler as GET, handler as POST };

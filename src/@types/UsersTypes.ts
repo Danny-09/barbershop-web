@@ -13,6 +13,10 @@ export type Session = {
   email: string;
   token: string;
   role: string;
-}
+};
 
-
+export type User = {
+  email: string;
+  token: string;
+  role: string;
+};
