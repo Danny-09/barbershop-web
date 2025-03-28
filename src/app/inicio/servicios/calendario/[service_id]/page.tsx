@@ -49,7 +49,7 @@ export default function BarberCalendar() {
           allDay: false,
         }
       ]);
-      Notiflix.Notify.info(' ¡Una cita ha sido agendada por otro usuario!', {
+      Notiflix.Notify.info(' ¡Una cita ha sido agendada!', {
         position: 'right-top',
         timeout: 10000,
       });
