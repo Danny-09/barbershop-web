@@ -33,11 +33,11 @@ export default function BarberCalendar() {
   const router = useRouter();
 
   // Establecer conexión al servidor de WebSocket
-  const socket = io("https://barber-app-api-eoil.onrender.com"); 
+  const socket = io("https://barber-app-api-eoil.onrender.com");
 
   useEffect(() => {
     fetchData();
-    
+
     // Escuchar el evento "appointmentCreated" para actualizar los eventos cuando se crea una cita
     socket.on('appointmentCreated', (appointment) => {
       setEvents(prevEvents => [
@@ -49,7 +49,7 @@ export default function BarberCalendar() {
           allDay: false,
         }
       ]);
-      Notiflix.Notify.success('✅ ¡Nueva cita agendada!', {
+      Notiflix.Notify.info(' ¡Una cita ha sido agendada por otro usuario!', {
         position: 'right-top',
         timeout: 3000,
       });
@@ -212,6 +212,9 @@ export default function BarberCalendar() {
         height="auto"
       />
       <style jsx>{`
+        .fc, .fc * {
+         color: black !important;
+        }
         @media (max-width: 768px) {
           .fc-header-toolbar {
             flex-direction: column;
