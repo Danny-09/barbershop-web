@@ -51,7 +51,7 @@ export default function BarberCalendar() {
       ]);
       Notiflix.Notify.info(' ¡Una cita ha sido agendada por otro usuario!', {
         position: 'right-top',
-        timeout: 3000,
+        timeout: 10000,
       });
     });
 
@@ -188,7 +188,7 @@ export default function BarberCalendar() {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 text-black">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="timeGridDay"
@@ -210,11 +210,13 @@ export default function BarberCalendar() {
         validRange={{ start: new Date() }}
         allDaySlot={false}
         height="auto"
+        eventContent={(eventInfo) => (
+          <div style={{ color: 'black' }}>
+            {eventInfo.timeText} {eventInfo.event.title}
+          </div>
+        )}
       />
       <style jsx>{`
-        .fc, .fc * {
-         color: black !important;
-        }
         @media (max-width: 768px) {
           .fc-header-toolbar {
             flex-direction: column;
@@ -225,6 +227,9 @@ export default function BarberCalendar() {
           .fc-button {
             font-size: 14px;
             padding: 5px 10px;
+          }
+            .fc, .fc * {
+         color: black !important;
           }
         }
       `}</style>
