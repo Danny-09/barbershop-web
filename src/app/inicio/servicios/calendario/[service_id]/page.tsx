@@ -141,7 +141,7 @@ export default function BarberCalendar() {
             setEvents((prevEvents) => [
               ...prevEvents,
               {
-                title: '🚫', // Vacio por ahora
+                title: '', // Vacio por ahora
                 start: arg.dateStr,
                 end: new Date(new Date(arg.dateStr).getTime() + 30 * 60000).toISOString(),
                 allDay: false,
@@ -216,8 +216,8 @@ export default function BarberCalendar() {
         allDaySlot={false}
         height="auto"
         eventContent={(eventInfo) => (
-          <div style={{ color: 'black', fontWeight: 'bold', backgroundColor: '#FFA500' }}>
-            <span>{eventInfo.timeText}</span> {eventInfo.event.title}
+          <div style={{ color: 'black', fontWeight: 'bold' }}>
+            <span>{eventInfo.timeText}</span>
           </div>
         )}
       />
