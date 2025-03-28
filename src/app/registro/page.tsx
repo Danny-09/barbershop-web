@@ -15,14 +15,14 @@ export default function Register() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<string>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrors([]);
+    setErrors('');
 
     if (password !== confirmPassword) {
-      setErrors(['Las contraseñas no coinciden.']);
+      setErrors('Las contraseñas no coinciden.');
       return;
     }
 
@@ -52,17 +52,10 @@ export default function Register() {
       let message = "Ocurrió un error inesperado.";
 
       if (error instanceof Error) {
-        // Si el error es una instancia de Error estándar
-        message = error.message;
-      } else if (typeof error === "object" && error !== null) {
-        // Si el error tiene una estructura esperada (como un error de Axios)
-        const axiosError = error as { response?: { data?: { message?: string[] } } };
-        message = axiosError.response?.data?.message?.[0] || message;
+        message = (error as any)?.response?.data?.message?.[0] || message;
       }
-
-      setErrors([message]);
-
-      toast.error(errors, {
+      
+      toast.error(message, {
         position: "top-right",
         autoClose: 3000,
       });
@@ -123,6 +116,8 @@ export default function Register() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+
+          {errors && <p className="text-red-600 font-bold text-center">{errors}...</p>}
 
           <div className="flex justify-between gap-4 mt-4">
             <Link

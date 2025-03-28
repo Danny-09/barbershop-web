@@ -26,13 +26,13 @@ const authOptions: NextAuthOptions = {
                     });
 
                     if (!res.ok) {
-                        throw new Error("Error en la autenticación");
+                        throw new Error("Crendenciales incorrectas");
                     }
 
                     const user = await res.json();
                     return user;
                 } catch (error) {
-                    throw new Error("No se pudo conectar con el servidor.");
+                    throw new Error("Crendenciales incorrectas");
                 }
             },
         }),
