@@ -205,14 +205,19 @@ export default function BarberCalendar() {
         slotDuration={'00:30:00'}
         slotLabelFormat={{ hour: 'numeric', minute: '2-digit', hour12: true }}
         events={events}
+        eventTimeFormat={{
+          hour: 'numeric',
+          minute: '2-digit',
+          hour12: true,
+        }}
         dateClick={handleDateClick}
         datesSet={handleDateChange}
         validRange={{ start: new Date() }}
         allDaySlot={false}
         height="auto"
         eventContent={(eventInfo) => (
-          <div style={{ color: 'black' }}>
-            {eventInfo.timeText} {eventInfo.event.title}
+          <div style={{ color: 'black', fontWeight: 'bold' }}>
+            <span style={{ color: 'white' }}>{eventInfo.timeText}</span> {eventInfo.event.title}
           </div>
         )}
       />
