@@ -13,13 +13,21 @@ import Notiflix from 'notiflix';
 import { useRouter } from "next/navigation";
 import { BarberSchedules, Events } from '@/@types/ScheduleTypes';
 
+interface Arg {
+  dateStr: string;
+}
+
+interface ArgStart {
+  start: Date;
+}
+
 export default function BarberCalendar() {
   const { service_id } = useParams();
   const barber_id = sessionStorage.getItem('bs');
   const [events, setEvents] = useState<Events>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [occupiedTimes, setOccupiedTimes] = useState<string[]>([]);
-  const [scheduleTimes, setScheduleTimes] = useState<BarberSchedules>([]);
+  const [scheduleTimes, setScheduleTimes] = useState<BarberSchedules[]>([]);
   const token = useToken();
   const router = useRouter();
 
@@ -48,8 +56,12 @@ export default function BarberCalendar() {
               allDay: false,
             }))
           );
-        } catch (error) {
-          console.error('Error al cargar citas:', error);
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(error.message);
+          } else {
+            console.error("Se produjo un error desconocido", error);
+          }
         }
       };
 
@@ -67,7 +79,7 @@ export default function BarberCalendar() {
     return occupiedTimes.some((occupied) => getDateTimeUTC(occupied) === selected);
   };
 
-  const handleDateClick = async (arg: any) => {
+  const handleDateClick = async (arg: Arg) => {
     if (isTimeOccupied(arg.dateStr)) {
       Notiflix.Notify.failure('⛔ Esta hora ya está ocupada.', {
         position: 'right-top',
@@ -102,7 +114,12 @@ export default function BarberCalendar() {
             });
             router.push("/inicio/mis-citas");
           }
-        } catch (error) {
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            console.error(error.message); // Ahora TypeScript reconoce 'message'
+          } else {
+            console.error("Se produjo un error desconocido", error);
+          }
           Notiflix.Report.failure(
             'Error',
             'Hubo un problema al agendar la cita. Intenta nuevamente.',
@@ -119,7 +136,7 @@ export default function BarberCalendar() {
     );
   };
 
-  const handleDateChange = (arg: any) => {
+  const handleDateChange = (arg: ArgStart) => {
     if (arg.start.toISOString() !== currentDate.toISOString()) {
       setCurrentDate(arg.start);
     }
@@ -127,7 +144,7 @@ export default function BarberCalendar() {
 
   const getDaySchedule = (date: Date) => {
     const dayOfWeek = date.getDay();
-    const daySchedule = scheduleTimes.find((schedule: any) => {
+    const daySchedule = scheduleTimes.find((schedule: BarberSchedules) => {
       const dayIndex = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'][dayOfWeek];
       return schedule.day === dayIndex;
     });

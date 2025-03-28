@@ -2,7 +2,7 @@ export type BarberSchedules = {
     day: string;
     start_time: string;
     end_time: string;
-}[];
+};
 
 export type Events = {
     title: string;

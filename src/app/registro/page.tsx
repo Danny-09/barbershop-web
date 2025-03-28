@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from 'react-toastify';
-import Error from "next/error";
 
 export default function Register() {
   const router = useRouter();
@@ -16,14 +15,14 @@ export default function Register() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [errors, setErrors] = useState<string[]>([]);
+  const [errors, setErrors] = useState<string>();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrors([]);
+    setErrors('');
 
     if (password !== confirmPassword) {
-      setErrors(['Las contraseñas no coinciden.']);
+      setErrors('Las contraseñas no coinciden.');
       return;
     }
 
@@ -49,14 +48,17 @@ export default function Register() {
         }, 2000);
       }
 
-    } catch (error: any) {
-      const message = error.response.data.message[0] || ['Ocurrió un error inesperado.'];
-      setErrors(message);
+    } catch (error: unknown) {
+      let message = "Ocurrió un error inesperado.";
 
-      toast.error(errors, {
+      if (error instanceof Error) {
+        message = (error as any)?.response?.data?.message?.[0] || message;
+      }
+      
+      toast.error(message, {
         position: "top-right",
         autoClose: 3000,
-      })
+      });
     }
   };
 
@@ -114,6 +116,8 @@ export default function Register() {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
+
+          {errors && <p className="text-red-600 font-bold text-center">{errors}...</p>}
 
           <div className="flex justify-between gap-4 mt-4">
             <Link

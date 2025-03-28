@@ -22,7 +22,7 @@ const LoginComponent = () => {
             password,
             redirect: false,
         });
-
+        console.log(responseNextAuth);
         if (responseNextAuth?.error) {
             setError(responseNextAuth.error.split(","));
             return;
@@ -61,8 +61,6 @@ const LoginComponent = () => {
 
                 <h2 className="text-2xl font-bold mb-6 text-center text-black">Iniciar Sesión</h2>
 
-                {error && <p className="text-red-500 mb-4 text-sm">{error}</p>}
-
                 <div className="mb-4">
                     <label className="block text-sm font-medium text-gray-700">Correo</label>
                     <input
@@ -84,6 +82,8 @@ const LoginComponent = () => {
                         required
                     />
                 </div>
+                
+                {error && <p className="text-red-500 mb-4 text-sm text-center font-bold">{error}</p>}
 
                 <button
                     type="submit"
