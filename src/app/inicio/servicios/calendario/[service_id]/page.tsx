@@ -12,6 +12,7 @@ import useToken from '@/hooks/useToken';
 import Notiflix from 'notiflix';
 import { useRouter } from "next/navigation";
 import { BarberSchedules, Events } from '@/@types/ScheduleTypes';
+import io from 'socket.io-client'; // Importa socket.io-client
 
 interface Arg {
   dateStr: string;
@@ -31,43 +32,63 @@ export default function BarberCalendar() {
   const token = useToken();
   const router = useRouter();
 
+  // Establecer conexión al servidor de WebSocket
+  const socket = io("https://barber-app-api-eoil.onrender.com"); 
+
   useEffect(() => {
-    if (token) {
-      const fetchData = async () => {
-        try {
-          const month = currentDate.getUTCMonth() + 1;
-          const year = currentDate.getUTCFullYear();
-
-          // Obtener los horarios del barbero
-          const times = await APIs.schedules.getByBarber(Number(barber_id), token.user.token);
-          setScheduleTimes(times);
-
-          // Obtener las citas ocupadas
-          const schedule = await APIs.appointments.barberSchedules(month, year, Number(barber_id), token.user.token);
-          const busyTimes = schedule.map((appointment) => appointment.date);
-          setOccupiedTimes(busyTimes);
-
-          // Generar los eventos para FullCalendar
-          setEvents(
-            schedule.map((appointment) => ({
-              title: 'Ocupado',
-              start: appointment.date,
-              end: new Date(new Date(appointment.date).getTime() + 30 * 60000).toISOString(),
-              allDay: false,
-            }))
-          );
-        } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error(error.message);
-          } else {
-            console.error("Se produjo un error desconocido", error);
-          }
+    fetchData();
+    
+    // Escuchar el evento "appointmentCreated" para actualizar los eventos cuando se crea una cita
+    socket.on('appointmentCreated', (appointment) => {
+      setEvents(prevEvents => [
+        ...prevEvents,
+        {
+          title: 'Ocupado',
+          start: appointment.date,
+          end: new Date(new Date(appointment.date).getTime() + 30 * 60000).toISOString(),
+          allDay: false,
         }
-      };
+      ]);
+      Notiflix.Notify.success('✅ ¡Nueva cita agendada!', {
+        position: 'right-top',
+        timeout: 3000,
+      });
+    });
 
-      fetchData();
-    }
+    // Limpiar el socket cuando el componente se desmonte
+    return () => {
+      socket.off('appointmentCreated');
+    };
   }, [currentDate, token, barber_id]);
+
+  const fetchData = async () => {
+    try {
+      if (!token) return;
+      const month = currentDate.getUTCMonth() + 1;
+      const year = currentDate.getUTCFullYear();
+
+      // Obtener los horarios del barbero
+      const times = await APIs.schedules.getByBarber(Number(barber_id), token.user.token);
+      setScheduleTimes(times);
+
+      // Obtener las citas ocupadas
+      const schedule = await APIs.appointments.barberSchedules(month, year, Number(barber_id), token.user.token);
+      const busyTimes = schedule.map((appointment) => appointment.date);
+      setOccupiedTimes(busyTimes);
+
+      // Actualizar los eventos para FullCalendar
+      setEvents(
+        schedule.map((appointment) => ({
+          title: 'Ocupado',
+          start: appointment.date,
+          end: new Date(new Date(appointment.date).getTime() + 30 * 60000).toISOString(),
+          allDay: false,
+        }))
+      );
+    } catch (error: unknown) {
+      console.error("Error al obtener datos: ", error);
+    }
+  };
 
   const getDateTimeUTC = (isoDate: string) => {
     const date = new Date(isoDate);
@@ -112,14 +133,24 @@ export default function BarberCalendar() {
               position: 'right-top',
               timeout: 3000,
             });
+
+            // Emitir el evento al servidor para notificar a otros clientes (esto será manejado por tu gateway en NestJS)
+            socket.emit('newAppointment', data);
+
+            // Actualizar el calendario después de crear la cita
+            setEvents((prevEvents) => [
+              ...prevEvents,
+              {
+                title: 'Ocupado',
+                start: arg.dateStr,
+                end: new Date(new Date(arg.dateStr).getTime() + 30 * 60000).toISOString(),
+                allDay: false,
+              },
+            ]);
             router.push("/inicio/mis-citas");
           }
         } catch (error: unknown) {
-          if (error instanceof Error) {
-            console.error(error.message); // Ahora TypeScript reconoce 'message'
-          } else {
-            console.error("Se produjo un error desconocido", error);
-          }
+          console.error("Error al crear la cita: ", error);
           Notiflix.Report.failure(
             'Error',
             'Hubo un problema al agendar la cita. Intenta nuevamente.',
@@ -182,17 +213,17 @@ export default function BarberCalendar() {
       />
       <style jsx>{`
         @media (max-width: 768px) {
-        .fc-header-toolbar {
-          flex-direction: column; /* Pone los botones y título en una columna */
+          .fc-header-toolbar {
+            flex-direction: column;
+          }
+          .fc-toolbar-chunk {
+            margin-bottom: 5px;
+          }
+          .fc-button {
+            font-size: 14px;
+            padding: 5px 10px;
+          }
         }
-        .fc-toolbar-chunk {
-          margin-bottom: 5px; /* Añade espacio entre los chunks (botones y título) */
-        }
-        .fc-button {
-          font-size: 14px; /* Redimensiona los botones */
-          padding: 5px 10px;
-        }
-      }
       `}</style>
     </div>
   );
