@@ -62,25 +62,25 @@ export default function MyAppointments() {
         );
     };
 
-    if (!token) return <div>Cargando citas...</div>;
+    if (!token) return <div className="text-black">Cargando citas...</div>;
 
     return (
         <div className="p-4">
-            <h1 className="text-xl font-semibold mb-4">Mis Citas</h1>
+            <h1 className="text-xl font-semibold mb-4 text-black">Mis Citas</h1>
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-                <table className="min-w-full table-auto">
+                <table className="min-w-full table-auto text-black">
                     <thead>
-                        <tr className="bg-gray-200 text-left">
+                        <tr className="bg-gray-200 text-left text-black">
                             <th className="px-4 py-2 border-b whitespace-nowrap">Barbero</th>
                             <th className="px-4 py-2 border-b whitespace-nowrap">Fecha</th>
                             <th className="px-4 py-2 border-b whitespace-nowrap">Servicio</th>
                             <th className="px-4 py-2 border-b text-center sticky right-0 bg-gray-200 z-10">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="text-black">
                         {misCitas.length > 0 ? (
                             misCitas.map((cita) => (
-                                <tr key={cita.id} className="border-b hover:bg-gray-50">
+                                <tr key={cita.id} className="border-b hover:bg-gray-50 text-black">
                                     <td className="px-4 py-2">{cita.barber.name}</td>
                                     <td className="px-4 py-2 font-bold text-white">
                                         <p className="px-4 py-2 bg-blue-500 border border-gray-300 rounded-lg">
@@ -109,7 +109,7 @@ export default function MyAppointments() {
                             ))
                         ) : (
                             <tr>
-                                <td colSpan={4} className="px-4 py-2 text-center">No tienes citas programadas.</td>
+                                <td colSpan={4} className="px-4 py-2 text-center text-black">No tienes citas programadas.</td>
                             </tr>
                         )}
                     </tbody>

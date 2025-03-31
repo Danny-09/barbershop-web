@@ -65,7 +65,7 @@ export default function Home() {
                                     />
 
                                     <div>
-                                        <h2 className="text-xl font-semibold">{barber.name}</h2>
+                                        <h2 className="text-xl font-semibold text-black">{barber.name}</h2>
                                         <p className="text-sm text-gray-600 flex items-center gap-2">
                                             <MapPinIcon className="w-5 h-5 text-black" />
                                             {barber.address}

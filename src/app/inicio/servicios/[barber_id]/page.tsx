@@ -32,7 +32,7 @@ export default function ServicesPage() {
         fetchServices();
     }, [token, barber_id]);
 
-    if (loading) return <p className="text-center text-lg font-semibold">Cargando servicios...</p>;
+    if (loading) return <p className="text-center text-lg font-semibold text-black">Cargando servicios...</p>;
 
     return (
         <div className="p-4">
@@ -52,7 +52,7 @@ export default function ServicesPage() {
                                 }`}
                             onClick={() => setSelectedService(service.id)}
                         >
-                            <h2 className="text-xl font-bold">{service.name}</h2>
+                            <h2 className="text-xl font-bold text-black">{service.name}</h2>
                             <p className="text-sm text-gray-700">{service.description}</p>
 
                             {/* Línea divisoria y precio alineado a la derecha */}
