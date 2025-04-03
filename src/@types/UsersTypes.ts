@@ -20,3 +20,7 @@ export type User = {
   token: string;
   role: string;
 };
+
+export type Id = {
+  id: number;
+}

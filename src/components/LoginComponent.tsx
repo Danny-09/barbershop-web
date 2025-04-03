@@ -22,7 +22,7 @@ const LoginComponent = () => {
             password,
             redirect: false,
         });
-        console.log(responseNextAuth);
+
         if (responseNextAuth?.error) {
             setError(responseNextAuth.error.split(","));
             return;

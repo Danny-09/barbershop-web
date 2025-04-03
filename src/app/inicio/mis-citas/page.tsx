@@ -9,14 +9,14 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 
 export default function MyAppointments() {
     const token = useToken();
-    const [misCitas, setMisCitas] = useState<AppointmentsList>([]);
+    const [myAppointments, setmyAppointments] = useState<AppointmentsList>([]);
 
     useEffect(() => {
         const fetchAppointments = async () => {
             if (token) {
                 try {
                     const appointments = await APIs.appointments.userAppointments(token.user.email, token.user.token);
-                    setMisCitas(appointments);
+                    setmyAppointments(appointments);
                 } catch (error) {
                     console.error("Error al obtener citas:", error);
                 }
@@ -46,7 +46,7 @@ export default function MyAppointments() {
                 Notiflix.Loading.circle();
                 try {
                     await APIs.appointments.changeStatusAppointment(appointmentId, 'disable', token);
-                    setMisCitas((prevCitas) => prevCitas.filter((cita) => cita.id !== appointmentId));
+                    setmyAppointments((prevCitas) => prevCitas.filter((cita) => cita.id !== appointmentId));
 
                     Notiflix.Loading.remove();
                     Notiflix.Notify.success("Cita cancelada con éxito");
@@ -78,8 +78,8 @@ export default function MyAppointments() {
                         </tr>
                     </thead>
                     <tbody className="text-black">
-                        {misCitas.length > 0 ? (
-                            misCitas.map((cita) => (
+                        {myAppointments.length > 0 ? (
+                            myAppointments.map((cita) => (
                                 <tr key={cita.id} className="border-b hover:bg-gray-50 text-black">
                                     <td className="px-4 py-2">{cita.barber.name}</td>
                                     <td className="px-4 py-2 font-bold text-white">

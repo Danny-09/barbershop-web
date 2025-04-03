@@ -14,6 +14,5 @@ export const changeStatusAppointment = async (id: number, action: string, token:
         }
     );
 
-
     return response;
 };

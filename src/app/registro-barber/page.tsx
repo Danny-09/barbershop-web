@@ -3,18 +3,19 @@
 import LogoComponent from "@/components/LogoComponent";
 import Link from "next/link";
 import { useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { useRegister } from "@/hooks/useRegister";
 
 export default function Register() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const { register } = useRegister();
 
+  const { register } = useRegister();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -28,8 +29,9 @@ export default function Register() {
       name: username,
       email: email,
       phone: phone,
+      address: address,
       password: password,
-      role_id: 3, // role for customers
+      role_id: 2, // role for barbers
     };
 
     await register(data);
@@ -72,6 +74,15 @@ export default function Register() {
             className="w-full text-black px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
+          />
+          <input
+            type="text"
+            name="text"
+            placeholder="Dirección"
+            className="w-full text-black px-4 py-2 border border-gray-300 rounded-lg focus:ring-1 focus:ring-black"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
           />
           <input
             type="password"
