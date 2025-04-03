@@ -11,6 +11,9 @@ import { getUserId } from "./users/methods/get-id";
 import { createSchedule } from "./schedules/methods/create";
 import { updateSchedule } from "./schedules/methods/update";
 import { deleteSchedule } from "./schedules/methods/delete";
+import { createService } from "./services/methods/create";
+import { updateService } from "./services/methods/update";
+import { changeStatusService } from "./services/methods/change-status";
 
 export const APIs = {
     appointments: {
@@ -26,6 +29,9 @@ export const APIs = {
         getUserId,
     },
     services: {
+        createService,
+        updateService,
+        changeStatusService,
         getServicesByBarber
     },
     schedules: {

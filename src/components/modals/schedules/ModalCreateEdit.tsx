@@ -6,14 +6,14 @@ import { useState, useEffect } from 'react';
 interface Data {
     day: string;
     start_time: string;
-    end_time: string
+    end_time: string;
 }
 
 interface CreateScheduleModalProps {
     isOpen: boolean;
     onClose: () => void;
     onSubmit: (data: Data) => void;
-    initialData?: BarberSchedules; 
+    initialData?: BarberSchedules;
 }
 
 export default function CreateScheduleModal({ isOpen, onClose, onSubmit, initialData }: CreateScheduleModalProps) {
@@ -21,7 +21,6 @@ export default function CreateScheduleModal({ isOpen, onClose, onSubmit, initial
     const [start_time, setstart_time] = useState<string>('');
     const [end_time, setend_time] = useState<string>('');
 
-    // Cargar datos iniciales si están presentes (para modo edición) o limpiar cuando se cierre el modal
     useEffect(() => {
         if (isOpen) {
             if (initialData) {
@@ -41,26 +40,24 @@ export default function CreateScheduleModal({ isOpen, onClose, onSubmit, initial
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         onSubmit({ day, start_time, end_time });
-        onClose(); // Cerrar el modal al enviar
+        onClose();
     };
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-            <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                <h2 className="text-2xl font-bold mb-4">
+            <div className="bg-white p-8 rounded-3xl shadow-xl w-full max-w-md transform transition-transform duration-300 hover:scale-105">
+                <h2 className="text-3xl font-extrabold text-gray-800 mb-6">
                     {initialData ? 'Editar Horario' : 'Crear Horario'}
                 </h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="mb-4">
-                        <label htmlFor="day" className="block text-gray-700 mb-2">
-                            Día
-                        </label>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label htmlFor="day" className="block text-lg font-semibold text-gray-700 mb-2">Día</label>
                         <select
                             id="day"
                             value={day}
                             disabled={!!initialData}
                             onChange={(e) => setDay(e.target.value)}
-                            className="w-full border border-gray-300 p-2 rounded"
+                            className="w-full border-2 border-gray-300 p-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                         >
                             <option value="">Selecciona un día</option>
                             <option value="lunes">Lunes</option>
@@ -72,41 +69,37 @@ export default function CreateScheduleModal({ isOpen, onClose, onSubmit, initial
                             <option value="domingo">Domingo</option>
                         </select>
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="start_time" className="block text-gray-700 mb-2">
-                            Hora de Inicio
-                        </label>
+                    <div>
+                        <label htmlFor="start_time" className="block text-lg font-semibold text-gray-700 mb-2">Hora de Inicio</label>
                         <input
                             id="start_time"
                             type="time"
                             value={start_time}
                             onChange={(e) => setstart_time(e.target.value)}
-                            className="w-full border border-gray-300 p-2 rounded"
+                            className="w-full border-2 border-gray-300 p-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                         />
                     </div>
-                    <div className="mb-4">
-                        <label htmlFor="end_time" className="block text-gray-700 mb-2">
-                            Hora de Fin
-                        </label>
+                    <div>
+                        <label htmlFor="end_time" className="block text-lg font-semibold text-gray-700 mb-2">Hora de Fin</label>
                         <input
                             id="end_time"
                             type="time"
                             value={end_time}
                             onChange={(e) => setend_time(e.target.value)}
-                            className="w-full border border-gray-300 p-2 rounded"
+                            className="w-full border-2 border-gray-300 p-3 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
                         />
                     </div>
-                    <div className="flex justify-end gap-2">
+                    <div className="flex justify-end gap-3 mt-6">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+                            className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-lg transition-transform transform hover:scale-105"
                         >
                             Cancelar
                         </button>
                         <button
                             type="submit"
-                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-5 rounded-lg transition-transform transform hover:scale-105"
                         >
                             {initialData ? 'Actualizar' : 'Crear'}
                         </button>

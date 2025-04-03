@@ -1,3 +1,5 @@
+'use client';
+
 import NavbarComponent from "@/components/NavbarComponent";
 import Notiflix from "notiflix";
 import { useEffect } from "react";
