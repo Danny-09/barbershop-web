@@ -30,6 +30,16 @@ export const useServices = () => {
         }
     }
 
+    const getActiveServices = async (barberId: number) => {
+        try {
+            if (!token) return;
+            const data = await APIs.services.getServicesByBarber(barberId, token.user.token);
+            setServices(data.items);
+        } catch (error: any) {
+            Notiflix.Notify.failure(error.message);
+        }
+    }
+
     const handleSubmit = async (data: Data, selectedService: Service | null) => {
         try {
             if (!token) return;
@@ -98,5 +108,5 @@ export const useServices = () => {
         getServices();
     }, [token]);
 
-    return { services, getServices, handleSubmit, handleChangeStatus }
+    return { services, getServices, getActiveServices, handleSubmit, handleChangeStatus }
 };

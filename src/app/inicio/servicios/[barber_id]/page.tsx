@@ -16,12 +16,15 @@ export default function ServicesPage() {
     const token = useToken();
 
     useEffect(() => {
-        if (!barber_id || !token) return;
 
         const fetchServices = async () => {
             try {
+                if (!barber_id || !token) return;
                 const data = await APIs.services.getServicesByBarber(Number(barber_id), token.user.token);
-                setServices(data.items);
+                // Filtrar solo los servicios con status true
+                const activeServices = data.items.filter(service => service.status === true);
+
+                setServices(activeServices);
             } catch (error) {
                 console.error("Error fetching services:", error);
             } finally {
