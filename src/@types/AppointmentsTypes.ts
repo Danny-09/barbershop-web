@@ -7,16 +7,21 @@ export type CreateAppointment = {
 };
 
 export type DeleteAppointment = {
-   affected: number;
+    affected: number;
 };
 
 type Barber = {
     name: string;
 };
 
+type User = {
+    name: string;
+};
+
 type Service = {
     name: string;
     price: number;
+    status?: boolean;
 };
 
 export type AppointmentsList = {
@@ -27,7 +32,7 @@ export type AppointmentsList = {
     service_id: number;
     status: number;
     barber: Barber;
-    service: Service
+    service: Service;
 }[];
 
 export type AppointmentsByMonthList = {
@@ -36,4 +41,7 @@ export type AppointmentsByMonthList = {
     user_id: number;
     barber_id: number;
     service_id: number;
+    user: User;
+    service: Service;
 }[];
+
