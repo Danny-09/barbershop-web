@@ -29,7 +29,7 @@ export default function Schedules() {
   };
 
   return (
-    <main className="p-6 text-gray-800">
+    <main className="p-6 text-gray-800 bg-white">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 gap-2">
         <h1 className="text-3xl font-bold text-gray-800">Gestión de Horarios</h1>
         <button
