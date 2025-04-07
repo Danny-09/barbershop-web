@@ -28,7 +28,7 @@ const Services = () => {
   };
 
   return (
-    <main className="p-8 text-gray-800">
+    <main className="p-8 text-gray-800 bg-white">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
         <h1 className="text-3xl font-bold text-gray-800">Mis servicios</h1>
         <button

@@ -11,7 +11,7 @@ export default function DashboardCitas() {
   const nextAppointment = todayAppointments?.[0];
 
   return (
-    <div className="p-4 md:p-8">
+    <div className="p-4 md:p-8 bg-white">
       <h1 className="text-2xl md:text-3xl font-bold mb-4">Dashboard de Citas</h1>
 
       {nextAppointment && (
@@ -47,7 +47,7 @@ export default function DashboardCitas() {
 
       )}
 
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 bg-white">
         <label className="text-base md:text-lg font-semibold">Mes:</label>
         <select
           className="border rounded p-1 md:p-2 text-gray-700 focus:ring-2 focus:ring-blue-500"
