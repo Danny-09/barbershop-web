@@ -12,12 +12,12 @@ export default function DashboardCitas() {
 
   return (
     <div className="p-4 md:p-8 bg-white">
-      <h1 className="text-2xl md:text-3xl font-bold mb-4">Dashboard de Citas</h1>
+      <h1 className="text-black text-2xl md:text-3xl font-bold mb-4">Dashboard de Citas</h1>
 
       {nextAppointment && (
         <div className="bg-white shadow-md rounded-lg p-6 md:p-8 mb-6 transition transform hover:scale-105">
           <h2 className="text-xl md:text-2xl font-semibold mb-4 text-gray-800">Próxima Cita</h2>
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="bg-white flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-center md:text-left">
               <p className="text-2xl md:text-3xl font-semibold text-gray-900">{nextAppointment.user.name}</p>
               <p className="text-base md:text-lg font-medium text-gray-600 mt-1">Hora:
