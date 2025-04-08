@@ -31,7 +31,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     };
 
     return (
-        <div className="min-h-screen flex flex-col">
+        <div className="min-h-screen flex flex-col bg-white">
             <NavbarComponent home='/dashboard' isOpen={isOpen} />
             <div className="flex flex-1">
                 <SidebarComponent isOpen={isOpen} toggleSidebar={toggleSidebar} />
