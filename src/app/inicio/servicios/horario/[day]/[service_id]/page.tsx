@@ -25,7 +25,7 @@ interface ArgStart {
 export default function BarberCalendar() {
   const { service_id } = useParams();
   const { day } = useParams();
-  console.log(day);
+
   const barber_id = sessionStorage.getItem('bs');
   const [events, setEvents] = useState<Events>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -37,6 +37,7 @@ export default function BarberCalendar() {
   // Establecer conexión al servidor de WebSocket
   const socket = io("https://barber-app-api-eoil.onrender.com");
 
+  // escuvhar evento de appointmentCreated
   useEffect(() => {
     fetchData();
 
@@ -63,6 +64,7 @@ export default function BarberCalendar() {
     };
   }, [currentDate, token, barber_id]);
 
+  
   const fetchData = async () => {
     try {
       if (!token) return;

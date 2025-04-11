@@ -48,7 +48,7 @@ export default function DashboardCitas() {
       )}
 
       <div className="flex items-center justify-between mb-4 bg-white">
-        <label className="text-base md:text-lg font-semibold">Mes:</label>
+        <label className="text-black text-base md:text-lg font-semibold">Mes:</label>
         <select
           className="border rounded p-1 md:p-2 text-gray-700 focus:ring-2 focus:ring-blue-500"
           value={month}
