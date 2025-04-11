@@ -37,7 +37,7 @@ export default function SidebarComponent({ isOpen, toggleSidebar }: SidebarProps
             {/* Lista de enlaces */}
             <ul className="mt-4 space-y-1">
                 <SidebarItem href="/dashboard" icon={<HomeIcon className="w-6 h-6" />} label="Dashboard" isOpen={isOpen} />
-                <SidebarItem href="/citas" icon={<CalendarIcon className="w-6 h-6" />} label="Citas" isOpen={isOpen} />
+                <SidebarItem href="/dashboard/calendario" icon={<CalendarIcon className="w-6 h-6" />} label="Calendario" isOpen={isOpen} />
                 <SidebarItem href="/dashboard/horarios" icon={<CalendarDaysIcon className="w-6 h-6" />} label="Horarios" isOpen={isOpen} />
                 <SidebarItem href="/dashboard/servicios" icon={<Cog6ToothIcon className="w-6 h-6" />} label="Servicios" isOpen={isOpen} />
                 <SidebarItem href="/dashboard/imagenes" icon={<PhotoIcon className="w-6 h-6" />} label="Imágenes" isOpen={isOpen} />

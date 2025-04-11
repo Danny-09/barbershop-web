@@ -2,9 +2,14 @@
 
 import { XMarkIcon, CalendarIcon, ClockIcon } from "@heroicons/react/24/solid";
 import { useAppointments } from "@/hooks/appointments/useAppointments";
+import { useEffect } from "react";
 
 export default function MyAppointments() {
-    const { myAppointments, handleStatusAppointment } = useAppointments(0);
+    const { myAppointments, getUserAppointments, handleStatusAppointment } = useAppointments(0);
+
+    useEffect(() => {
+        getUserAppointments();
+    },[myAppointments]);
 
     if (myAppointments.length === 0) return <div className="text-black text-center py-4">Cargando citas...</div>;
 
@@ -21,7 +26,7 @@ export default function MyAppointments() {
                             hour: "2-digit",
                             minute: "2-digit",
                             hour12: true,
-                            timeZone: "UTC", 
+                            timeZone: "UTC",
 
                         });
 

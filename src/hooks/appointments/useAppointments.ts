@@ -3,6 +3,8 @@ import useToken from "../useToken";
 import { useEffect, useState } from "react";
 import { AppointmentsByMonthList, AppointmentsList } from "@/@types/AppointmentsTypes";
 import Notiflix from "notiflix";
+import { BarberSchedules } from "@/@types/ScheduleTypes";
+import { get } from "http";
 
 export const useAppointments = (month: number) => {
     const token = useToken();
@@ -10,10 +12,12 @@ export const useAppointments = (month: number) => {
     const [appointments, setAppointments] = useState<AppointmentsByMonthList>([]);
     const [todayAppointments, setTodayAppointments] = useState<AppointmentsByMonthList>([]);
     const [myAppointments, setMyAppointments] = useState<AppointmentsList>([]);
+    const [scheduleTimes, setScheduleTimes] = useState<BarberSchedules[]>([]);
 
     const getAppointments = async () => {
         try {
             if (!token) return;
+
             const user = await APIs.users.getUserId(token?.user.token, token?.user.email);
 
             const year = currentDate.getUTCFullYear();
@@ -31,10 +35,8 @@ export const useAppointments = (month: number) => {
                 return appointmentDate === today;
             });
 
-            setAppointments(appointments); 
-            setTodayAppointments(filteredTodayAppointments); 
-            console.log(today)
-
+            setAppointments(appointments);
+            setTodayAppointments(filteredTodayAppointments);
 
         } catch (error: any) {
             Notiflix.Notify.failure(error.message);
@@ -50,12 +52,24 @@ export const useAppointments = (month: number) => {
             Notiflix.Notify.failure(error.message);
         }
 
-    }
+    };
+
+    const getBarberSchedules = async () => {
+        try {
+            if (!token) return;
+            const user = await APIs.users.getUserId(token?.user.token, token?.user.email);
+            const times = await APIs.schedules.getByBarber(user.id, token.user.token);
+            setScheduleTimes(times);
+        } catch (error: any) {
+            Notiflix.Notify.failure(error.message);
+        }
+
+    };
 
     const handleStatusAppointment = async (appointmentId: number, date: string, action: string, message: string) => {
         Notiflix.Confirm.show(
             "Confirmar acción",
-            `¿Estás seguro de que quieres ${message} esta cita ${new Date(date).toLocaleString("es-ES", {
+            `¿Estás seguro de que quieres ${message} esta cita:  ${new Date(date).toLocaleString("es-ES", {
                 weekday: "long",
                 year: "numeric",
                 month: "long",
@@ -89,7 +103,8 @@ export const useAppointments = (month: number) => {
     useEffect(() => {
         getAppointments();
         getUserAppointments();
-    }, [token, month]);
+        getBarberSchedules();
+    }, [token, currentDate, month]);
 
-    return { appointments, todayAppointments, myAppointments, handleStatusAppointment };
+    return { appointments, todayAppointments, myAppointments, scheduleTimes, getUserAppointments, handleStatusAppointment };
 };
